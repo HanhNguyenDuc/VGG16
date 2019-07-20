@@ -67,7 +67,6 @@ y_train = y_train[:endp]
 model.compile(optimizer = 'adam', loss = 'sparse_categorical_crossentropy', metrics = ['accuracy'])
 
 datagen = datagen = ImageDataGenerator(
-    featurewise_center = True,
     rotation_range=10,
     width_shift_range=0.1,
     height_shift_range=0.1,
