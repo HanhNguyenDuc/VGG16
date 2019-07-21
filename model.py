@@ -4,6 +4,7 @@ from keras.datasets import cifar10
 import numpy as np
 from sklearn.utils import shuffle
 from keras.preprocessing.image import ImageDataGenerator
+from keras.optimizers import Adam
 
 (X_train, y_train), (X_test, y_test) = cifar10.load_data()
 IMG_SHAPE = X_train.shape[1:]
@@ -64,7 +65,9 @@ y_val = y_train[endp:]
 X_train = X_train[:endp]
 y_train = y_train[:endp]
 
-model.compile(optimizer = 'adam', loss = 'sparse_categorical_crossentropy', metrics = ['accuracy'])
+adam = Adam(lr = 1e-4, beta_1 = 0.9, beta_2 = 0.99)
+
+model.compile(optimizer = adam, loss = 'sparse_categorical_crossentropy', metrics = ['accuracy'])
 
 datagen = datagen = ImageDataGenerator(
     rotation_range=10,
@@ -74,7 +77,7 @@ datagen = datagen = ImageDataGenerator(
 
 datagen.fit(X_train)
 
-model.fit_generator(datagen.flow(X_train, y_train), validation_data = (X_val, y_val), steps_per_epoch = len(X_train) / 32, epochs = 2)
+model.fit_generator(datagen.flow(X_train, y_train), validation_data = (X_val, y_val), steps_per_epoch = len(X_train) / 32, epochs = 25)
 
 loss, acc = model.evaluate(X_test, y_test)
 print(loss, acc)
